@@ -115,7 +115,7 @@ namespace DependencyViewer
 	    private void LoadSolution()
 	    {
             lbProjects.Items.Clear();
-
+            _projects_in_sln.Clear();
             if (FilenameIsValid() == false) return;
 
 	        SolutionLoader loader = GetLoader();
@@ -142,6 +142,8 @@ namespace DependencyViewer
 
 	    private void btnRender_Click(object sender, RoutedEventArgs e)
 		{
+            if (_currentSolution == null) return;
+ 
             var processor = new QuickGraphProcessor(_currentSolution);
             processor.SetAllSolution(_allSolution);
 			Compose(processor);
@@ -167,36 +169,61 @@ namespace DependencyViewer
             if (check_box.IsChecked == true)
             {
                 _currentSolution.Add(project);
-                //sace dependencies
-                //foreach (var projectRef in project.ProjectReferences)
-                //{
-                //    if (_allSolution.GetProject(projectRef) == null /*|| _solution.GetProject(projectRef).IsSelected == false*/) continue;
-                //    Project refproject = _allSolution.GetProject(projectRef);
-                //    refproject.Selected(true);
-                //    _currentSolution.Add(refproject);
-                //}
             }
         }
 
         private void btnSaveDependencies_Click(object sender, RoutedEventArgs e)
         {
-            FileStream fs = File.Create("dependencies.txt");
-            StreamWriter sw = new StreamWriter(fs);
-            foreach (var project in _currentSolution.Projects)
+            if (_currentSolution != null)
             {
-               
-                sw.WriteLine("project :" + project.Name);
-                sw.WriteLine("--dependencies :" );
+                SaveDependencies("selected_dependencies.txt", _currentSolution.Projects, _currentSolution);
+            }
+        }
+
+        private void SaveDependencies(string fileName,IList<Project> projects,Solution solution)
+        {
+            if (projects.Count < 0) return;
+
+            FileStream fs = File.Create(fileName);
+            StreamWriter sw = new StreamWriter(fs);
+            int index = 0;
+            int max_project_ref = 0;
+            string max_ref_of_project = null;
+            foreach (var project in projects)
+            {
+                index++;
+                sw.WriteLine("project :" + index + "  " + project.Name);
+                sw.WriteLine("--dependencies :");
+                int project_ref_index = 0;
+
                 foreach (var projectRef in project.ProjectReferences)
                 {
-                    
-                    if (_allSolution.GetProject(projectRef) == null /*|| _solution.GetProject(projectRef).IsSelected == false*/) continue;
-                    Project refproject = _allSolution.GetProject(projectRef);
-                    sw.WriteLine("----" + refproject.Name);
+                    if (solution.GetProject(projectRef) == null) continue;
+                    project_ref_index++;
+                    Project refproject = solution.GetProject(projectRef);
+                    sw.WriteLine(index + "--" + project_ref_index + "--" + refproject.Name);
                 }
+                if (project_ref_index > max_project_ref)
+                {
+                    max_project_ref = project_ref_index;
+                    max_ref_of_project = project.Name;
+                }
+
+                sw.WriteLine();
             }
+            if (max_project_ref > 0)
+              sw.WriteLine("Max project refs is " + max_project_ref + " of" + max_ref_of_project);
             sw.Close();
             fs.Close();
+        }
+
+        private void btnSaveAllDependencies_Click(object sender, RoutedEventArgs e)
+        {
+            if (_allSolution != null)
+            {
+                SaveDependencies("all_dependencies.txt", _allSolution.Projects, _allSolution);
+            }
+           
         }
 
 	}

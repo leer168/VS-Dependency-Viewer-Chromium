@@ -4,6 +4,7 @@ using System.Xml;
 using DependencyViewer.Common.Loaders;
 using DependencyViewer.Tests;
 using NUnit.Framework;
+using System.IO;
 
 namespace Specs_For_ProjectLoader
 {
@@ -25,7 +26,7 @@ namespace Specs_For_ProjectLoader
         [SetUp]
         public void Setup()
         {
-            project = new ProjectLoader(GetCSProjFile("testproject2.csproj.txt"));
+            project = new ProjectLoader(File.ReadAllText(GetCSProjFile("testproject2.csproj.txt")), GetCSProjFile("testproject2.csproj.txt"));
         }
 
         private ProjectLoader project;
@@ -55,7 +56,7 @@ namespace Specs_For_ProjectLoader
         [SetUp]
         public void Setup()
         {
-            project = new ProjectLoader(GetCSProjFile("testproject2.csproj.txt"));
+            project = new ProjectLoader(File.ReadAllText(GetCSProjFile("testproject2.csproj.txt")), GetCSProjFile("testproject2.csproj.txt"));
         }
 
         private ProjectLoader project;
@@ -73,7 +74,7 @@ namespace Specs_For_ProjectLoader
         [SetUp]
         public void Setup()
         {
-            project = new ProjectLoader(GetCSProjFile("testproject2.csproj.txt"));
+            project = new ProjectLoader(File.ReadAllText(GetCSProjFile("testproject2.csproj.txt")), GetCSProjFile("testproject2.csproj.txt"));
         }
 
         private ProjectLoader project;
@@ -86,7 +87,8 @@ namespace Specs_For_ProjectLoader
         [ExpectedException(typeof(LoaderException))]
         public void The_Constructor_Throws_An_Invalid_Project_Exception()
         {
-            new ProjectLoader("<bad>this is not xml");
+            //new ProjectLoader("<bad>this is not xml");
+            Assert.Fail();
         }
 
         [Test]
@@ -94,7 +96,7 @@ namespace Specs_For_ProjectLoader
         {
             try
             {
-                new ProjectLoader("<bad>this is not xml");
+                //new ProjectLoader("<bad>this is not xml");
                 Assert.Fail();
             }
             catch(LoaderException e)
