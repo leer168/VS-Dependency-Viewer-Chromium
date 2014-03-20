@@ -167,19 +167,36 @@ namespace DependencyViewer
             if (check_box.IsChecked == true)
             {
                 _currentSolution.Add(project);
-                foreach (var projectRef in project.ProjectReferences)
-                {
-                    if (_allSolution.GetProject(projectRef) == null /*|| _solution.GetProject(projectRef).IsSelected == false*/) continue;
-                    Project refproject = _allSolution.GetProject(projectRef);
-                    refproject.Selected(true);
-                    _currentSolution.Add(refproject);
-                }
+                //sace dependencies
+                //foreach (var projectRef in project.ProjectReferences)
+                //{
+                //    if (_allSolution.GetProject(projectRef) == null /*|| _solution.GetProject(projectRef).IsSelected == false*/) continue;
+                //    Project refproject = _allSolution.GetProject(projectRef);
+                //    refproject.Selected(true);
+                //    _currentSolution.Add(refproject);
+                //}
             }
         }
 
-        private void btnUnSelectAll_Click(object sender, RoutedEventArgs e)
+        private void btnSaveDependencies_Click(object sender, RoutedEventArgs e)
         {
-            lbProjects.UnselectAll();
+            FileStream fs = File.Create("dependencies.txt");
+            StreamWriter sw = new StreamWriter(fs);
+            foreach (var project in _currentSolution.Projects)
+            {
+               
+                sw.WriteLine("project :" + project.Name);
+                sw.WriteLine("--dependencies :" );
+                foreach (var projectRef in project.ProjectReferences)
+                {
+                    
+                    if (_allSolution.GetProject(projectRef) == null /*|| _solution.GetProject(projectRef).IsSelected == false*/) continue;
+                    Project refproject = _allSolution.GetProject(projectRef);
+                    sw.WriteLine("----" + refproject.Name);
+                }
+            }
+            sw.Close();
+            fs.Close();
         }
 
 	}

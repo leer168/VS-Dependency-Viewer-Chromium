@@ -65,6 +65,6 @@
 			<Button Grid.Column="2" Height="23" Grid.Row="1" Click="OutputBrowseButton_Click">Browse</Button>
 		</Grid>
         <Button Height="23" Grid.Row="3"  Name="btnRender" Click="btnRender_Click">Render Solution</Button>
-        <Button Height="23"  Grid.Row="4"  Name="btnUnselectAll" Click="btnUnSelectAll_Click">Unselect All</Button>
+        <Button Height="23"  Grid.Row="4"  Name="btnSaveDependencies" Click="btnSaveDependencies_Click">Save Dependencies</Button>
     </Grid>
 </Window>

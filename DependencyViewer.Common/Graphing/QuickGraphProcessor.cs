@@ -58,7 +58,7 @@ namespace DependencyViewer.Common.Graphing
 				
 				foreach(var projectRef in project.ProjectReferences)
 				{
-                    if (_solution.GetProject(projectRef) == null /*|| _solution.GetProject(projectRef).IsSelected == false*/) continue;
+                    if (_solution.GetProject(projectRef) == null || _solution.GetProject(projectRef).IsSelected == false) continue;
 
                     int toVertex = _projects[_solution.GetProject(projectRef)];
 					_graph.AddEdge(new Edge<int>(currentProject, toVertex));
