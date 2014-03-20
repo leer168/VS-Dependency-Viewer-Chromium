@@ -1,0 +1,18 @@
+
+*.user
+*.suo
+/DependencyViewer.Common/bin/
+/DependencyViewer.Common/obj/
+/DependencyViewer/bin/
+/DependencyViewer/obj/
+/DependencyViewer.Tests/bin/
+/DependencyViewer.Tests/obj/
+/TestProjectProcessor/bin/
+/TestProjectProcessor/obj/
+/DependencyViewer.Console/bin/
+/DependencyViewer.Console/obj/
+/Build/
+/Test Data/
+/Backup/
+/_UpgradeReport_Files/
+/UpgradeLog.XML
