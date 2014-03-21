@@ -35,7 +35,7 @@ namespace DependencyViewer
 				return;
 
             // Search for the likely location of graphviz
-		    string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+            string programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 		    string folderToStartIn = programFiles;
             
             var folders = Directory.GetDirectories(programFiles, "Graphviz*")
