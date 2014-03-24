@@ -76,7 +76,7 @@ namespace DependencyViewer
 			                  Multiselect = false,
 			                  InitialDirectory = Directory.GetCurrentDirectory()
 			              };
-
+            ofd.RestoreDirectory = true;
 		    if(ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
 				tbFilename.Text = ofd.FileName;
@@ -85,15 +85,15 @@ namespace DependencyViewer
 
 		private void OutputBrowseButton_Click(object sender, RoutedEventArgs e)
 		{
-			var ofd = new System.Windows.Forms.OpenFileDialog
+            var sfd = new System.Windows.Forms.SaveFileDialog
 			              {
-			                  Multiselect = false,
 			                  InitialDirectory = Directory.GetCurrentDirectory()
 			              };
-
-		    if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            sfd.Filter = @"png|*.png";
+            sfd.RestoreDirectory = true;
+            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 			{
-				tbOutputFilename.Text = ofd.FileName;
+                tbOutputFilename.Text = sfd.FileName;
 			}
 		}
 
@@ -201,7 +201,7 @@ namespace DependencyViewer
                     if (solution.GetProject(projectRef) == null) continue;
                     project_ref_index++;
                     Project refproject = solution.GetProject(projectRef);
-                    sw.WriteLine(index + "--" + project_ref_index + "--" + refproject.Name);
+                    sw.WriteLine(index + ": " + project_ref_index + "--" + refproject.Name);
                 }
                 if (project_ref_index > max_project_ref)
                 {
@@ -212,7 +212,7 @@ namespace DependencyViewer
                 sw.WriteLine();
             }
             if (max_project_ref > 0)
-              sw.WriteLine("Max project refs is " + max_project_ref + " of" + max_ref_of_project);
+              sw.WriteLine("Max project refs is " + max_project_ref + " of " + max_ref_of_project);
             sw.Close();
             fs.Close();
         }
